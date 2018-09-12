@@ -20,7 +20,6 @@ var methods = {
 
         request('https://www.ovh.com/engine/api/dedicated/server/availabilities?country=uk', function(error, response, body){
             body = JSON.parse(body);
-            var serverTemp = [];
             var alreadyUpdated = [];
 
             for(var i = 0; i < body.length; i++){
@@ -37,19 +36,17 @@ var methods = {
                     var hardware = body[i].hardware.slice(4,10);
 
                     if(alreadyUpdated.includes(hardware) && available > 0){
-                        dbhand.updateRow(hardware, 1);
+                        dbhand.updateRow(hardware, available);
                         alreadyUpdated.push(hardware);
                     } else if(!alreadyUpdated.includes(hardware) && available > 0){
-                        dbhand.updateRow(hardware, 1);
+                        dbhand.updateRow(hardware, available);
                         alreadyUpdated.push(hardware);
                     } else if(!alreadyUpdated.includes(hardware) && available == 0){
-                        dbhand.updateRow(hardware, 0);
+                        dbhand.updateRow(hardware, available);
                         alreadyUpdated.push(hardware);
                     }
                 }
             }
-
-            callback(serverTemp);
 
         });
     }

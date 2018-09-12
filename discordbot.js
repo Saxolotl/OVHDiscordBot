@@ -1,14 +1,13 @@
 const Discord = require('discord.js');
 const schedule = require('node-schedule');
 
-const checker = require('./index');
+const checker = require('./checker');
 const config = require('./config.json');
 
 const client = new Discord.Client();
 
 
 var channel;
-var date = new Date();
 
 //TODO: move to different file
 function addZero(time){    
@@ -19,8 +18,9 @@ function addZero(time){
     }
 }
 
-var job = schedule.scheduleJob('*/' + config.updateInterval + ' * * * *', function(fireDate){
-    console.log(fireDate);
+var job = schedule.scheduleJob('*/' + config.updateInterval + ' * * * *', function(){
+    var date = new Date();
+
     checker.updateServers(function(servers){
         var msg = '```';
 
@@ -34,7 +34,7 @@ var job = schedule.scheduleJob('*/' + config.updateInterval + ' * * * *', functi
         channel.send("**Server status as of: **" + addZero(date.getHours()) + ":" + addZero(date.getMinutes()));
         channel.send(msg);
     });
-})
+});
 
 client.on('ready', () => {
     channel = client.channels.get(config.channelID);

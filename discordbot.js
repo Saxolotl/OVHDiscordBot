@@ -6,6 +6,7 @@ const client = new Discord.Client();
 var channel;
 var date = new Date();
 
+//getHours and getMinutes returns single digits if below 10
 function addZero(time){    
     if(time < 10){
         return ("0" + time);
@@ -16,6 +17,7 @@ function addZero(time){
 
 client.on('ready', () => {
     console.log('Ready!');
+    //TODO: get channel from config
     channel = client.channels.get("489444708029038595")
 
     checker.updateServers(function(servers){
@@ -39,4 +41,5 @@ client.on('message', msg => {
     }
 })
 
+//TODO: get token from config
 client.login('NDg5NDQzOTM4NDY2NTI5Mjgx.Dnq12A.vpiijy0Nr2EY8Xn0cM4bxJE7nHw');

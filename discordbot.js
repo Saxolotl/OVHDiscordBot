@@ -1,12 +1,16 @@
 const Discord = require('discord.js');
+const schedule = require('node-schedule');
+
 const checker = require('./index');
+const config = require('./config.json');
+
 const client = new Discord.Client();
 
 
 var channel;
 var date = new Date();
 
-//getHours and getMinutes returns single digits if below 10
+//TODO: move to different file
 function addZero(time){    
     if(time < 10){
         return ("0" + time);
@@ -15,11 +19,8 @@ function addZero(time){
     }
 }
 
-client.on('ready', () => {
-    console.log('Ready!');
-    //TODO: get channel from config
-    channel = client.channels.get("489444708029038595")
-
+var job = schedule.scheduleJob('*/' + config.updateInterval + ' * * * *', function(fireDate){
+    console.log(fireDate);
     checker.updateServers(function(servers){
         var msg = '```';
 
@@ -33,6 +34,10 @@ client.on('ready', () => {
         channel.send("**Server status as of: **" + addZero(date.getHours()) + ":" + addZero(date.getMinutes()));
         channel.send(msg);
     });
+})
+
+client.on('ready', () => {
+    channel = client.channels.get(config.channelID);
 });
 
 client.on('message', msg => {
@@ -41,5 +46,4 @@ client.on('message', msg => {
     }
 })
 
-//TODO: get token from config
-client.login('NDg5NDQzOTM4NDY2NTI5Mjgx.Dnq12A.vpiijy0Nr2EY8Xn0cM4bxJE7nHw');
+client.login(config.discordToken);

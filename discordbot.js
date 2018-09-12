@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const schedule = require('node-schedule');
 
 const checker = require('./checker');
+const db = require('./dbhandler');
 const config = require('./config.json');
 
 const client = new Discord.Client();
@@ -21,29 +22,56 @@ function addZero(time){
 var job = schedule.scheduleJob('*/' + config.updateInterval + ' * * * *', function(){
     var date = new Date();
 
-    checker.updateServers(function(servers){
-        var msg = '```';
 
-        for(var i = 0; i < servers.length; i++){
-            msg += servers[i] + "\n";
-        }
-
-        msg += '```';
-        console.log(msg.length);
-
-        channel.send("**Server status as of: **" + addZero(date.getHours()) + ":" + addZero(date.getMinutes()));
-        channel.send(msg);
-    });
 });
 
 client.on('ready', () => {
     channel = client.channels.get(config.channelID);
+    checker.updateServers(function(){
+        console.log("hello?");
+    });
 });
 
 client.on('message', msg => {
-    if(msg.content === '1801sys45'){
-        msg.reply(checker.getName(msg.content));
+    if(msg.content === 'server'){
+        genEmbed(msg.content);
     }
 })
 
 client.login(config.discordToken);
+
+function genEmbed(content){
+    db.getServer(content, function(server){
+        var kim = "";
+        var sys = "";
+        var ovh = "";
+
+        var date = new Date();
+
+        for(var i = 0; i < server.length; i++){
+            var msgFormat = server[i].name + " "+ (server[i].available == 0 ? "unavailable" : "**available**") + "\n";
+
+            if(server[i].provider == "kimsufi"){
+                kim += msgFormat;
+            } else if(server[i].provider == "soyoustart"){
+                sys += msgFormat;
+            } else if(server[i].provider == "ovh"){
+                ovh += msgFormat;
+            }
+        }
+
+        var embed = new Discord.RichEmbed()
+            .setColor('#A020F0')
+            .setTitle('Current Availability of most OVH Servers visible through API, This was retrieved at ' + addZero(date.getHours()) + ":" + addZero(date.getMinutes()))
+            .setAuthor('OVH Availability', 'https://partners.ovh.com/assets/images/logo-ovh-contour.png')
+            .addField('Kimsufi Servers', kim + '', true)
+            .addField('SoYouStart Servers', sys + '', true)
+            .addField('OVH Servers', ovh + '', true)
+            .setTimestamp()
+
+        channel.send(embed);
+    });
+
+
+    
+}

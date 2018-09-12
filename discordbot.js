@@ -40,7 +40,7 @@ client.on('message', msg => {
 
 client.login(config.discordToken);
 
-function genEmbed(content){
+function generateEmbed(content){
     db.getServer(content, function(server){
         var kim = "";
         var sys = "";

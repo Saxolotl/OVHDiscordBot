@@ -1,0 +1,98 @@
+[
+    {
+        "displayName" : "E3-SAT-1-16",
+        "backendName" : "1801sys45"
+    },
+    {
+        "displayName" : "OP-SAT-1-32",
+        "backendName" : "1801sys46"
+    },
+    {
+        "displayName" : "E3-SAT-2-32",
+        "backendName" : "1801sys011"
+    },
+    {
+        "displayName" : "E3-SAT-1-32",
+        "backendName" : "1801sys48"
+    },
+    {
+        "displayName" : "OP-SAT-2-128",
+        "backendName" : "1801sys52"
+    },
+    {
+        "displayName" : "E3-SSD-1-32",
+        "backendName" : "1801sys47"
+    },
+    {
+        "displayName" : "E3-SSD-2-32",
+        "backendName" : "1801sys49"
+    },
+    {
+        "displayName" : "E3-SAT-2-32",
+        "backendName" : "1801sys50"
+    },
+    {
+        "displayName" : "E5-SAT-1-64",
+        "backendName" : "1801sys53"
+    },
+    {
+        "displayName" : "E5-SSD-1-64",
+        "backendName" : "1801sys54"
+    },
+    {
+        "displayName" : "E5-SAT-2-64",
+        "backendName" : "1801sys56"
+    },
+    {
+        "displayName" : "E5-SSD-2-64",
+        "backendName" : "1801sys55"
+    },
+    {
+        "displayName" : "E3-SAT-1-16",
+        "backendName" : "1804sys07"
+    },
+    {
+        "displayName" : "E3-SAT-1-16",
+        "backendName" : "1804sys45"
+    },
+    {
+        "displayName" : "OP-SAT-1-32",
+        "backendName" : "1804sys46"
+    },
+    {
+        "displayName" : "E3-SSD-1-32",
+        "backendName" : "1804sys47"
+    },
+    {
+        "displayName" : "E3-SAT-1-32",
+        "backendName" : "1804sys48"
+    },
+    {
+        "displayName" : "E3-SAT-2-32",
+        "backendName" : "1804sys04"
+    },
+    {
+        "displayName" : "E3-SAT-2-32",
+        "backendName" : "1804sys50"
+    },
+    {
+        "displayName" : "E3-SSD-2-32",
+        "backendName" : "1804sys49"
+    },
+    {
+        "displayName" : "E5-SAT-1-64",
+        "backendName" : "1804sys53"
+    },
+    {
+        "displayName" : "E5-SSD-1-64",
+        "backendName" : "1804sys54"
+    },
+    {
+        "displayName" : "E5-SSD-2-64",
+        "backendName" : "1804sys55"
+    },
+    {
+        "displayName" : "E5-SAT-2-64",
+        "backendName" : "1804sys56"
+    }    
+]

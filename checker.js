@@ -1,8 +1,5 @@
 const request = require('request');
-const kimsufi = require('./servers/kimsufi.json');
-const soyoustart = require('./servers/soyoustart.json');
-
-var servers = [];
+const dbhand = require('./dbhandler');
 
 let regions = {
     "waw" : "Warsaw",
@@ -18,41 +15,36 @@ let regions = {
 }
 
 var methods = {
-    getName: function(backendName) {
-        for(var i = 0; i < kimsufi.length; i++){
-            if(backendName == kimsufi[i].backendName){
-                return kimsufi[i].displayName;
-            }
-        }
-
-        // for(var i = 0; i < soyoustart.length; i++){
-        //     if(backendName == soyoustart[i].backendName){
-        //         return soyoustart[i].displayName;
-        //     }
-        // }
-
-        return backendName;
-    },
     //use callback to pass servers to discordbot.js
     updateServers: function(callback) {
 
         request('https://www.ovh.com/engine/api/dedicated/server/availabilities?country=uk', function(error, response, body){
             body = JSON.parse(body);
             var serverTemp = [];
+            var alreadyUpdated = [];
 
             for(var i = 0; i < body.length; i++){
-                if(!body[i].hardware.includes("discount") && methods.getName(body[i].hardware) != body[i].hardware){
+                if(!body[i].hardware.includes("discount")){
 
                     var dcList = body[i].datacenters;
-                    var dcDebug = "";
+                    var available = 0;
                     for(var j = 0; j < dcList.length; j++){
-
                         if(dcList[j].availability != "unavailable"){
-                            dcDebug += regions[dcList[j].datacenter] + " in " + dcList[j].availability + " ";
+                            available++;
                         }
                     }
-                    if(dcDebug != ""){
-                        serverTemp.push("Server: " + methods.getName(body[i].hardware) + " (" + body[i].region + ") " + " available: " + dcDebug);
+                    
+                    var hardware = body[i].hardware.slice(4,10);
+
+                    if(alreadyUpdated.includes(hardware) && available > 0){
+                        dbhand.updateRow(hardware, 1);
+                        alreadyUpdated.push(hardware);
+                    } else if(!alreadyUpdated.includes(hardware) && available > 0){
+                        dbhand.updateRow(hardware, 1);
+                        alreadyUpdated.push(hardware);
+                    } else if(!alreadyUpdated.includes(hardware) && available == 0){
+                        dbhand.updateRow(hardware, 0);
+                        alreadyUpdated.push(hardware);
                     }
                 }
             }

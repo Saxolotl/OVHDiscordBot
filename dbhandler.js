@@ -7,10 +7,12 @@ if(!fs.existsSync('./ovh.db')){
     process.exit(-1);
 }
 
-const db = new sqlite.Database('./ovh.db');
+var db = new sqlite.Database('./ovh.db');
+var servers = [];
 
 var methods={
     updateRow : function(backendName, available){
+        
         backendName = backendName.slice(4,10);
 
         var sql = 'UPDATE servers SET available=? WHERE backendName=?';
@@ -20,10 +22,19 @@ var methods={
             if(err) {
                 return console.error(err.message);
             }
-
-            console.log("Updated: " +  + this.changes);
         });
-    }
+    },
+    getServer : function(server, callback){
+        servers = [];
+
+        db.all("SELECT * FROM servers", function(err, rows){
+            for(var i = 0; i < rows.length; i++){
+                servers.push({"name" : rows[i].frontendName, "available" : rows[i].available, "provider" : rows[i].provider});
+            }
+
+            callback(servers);
+        });
+    },
 };
 
 module.exports = methods;

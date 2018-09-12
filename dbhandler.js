@@ -1,4 +1,5 @@
 const sqlite = require('sqlite3');
+const kimsufi = require('./servers/soyoustart.json');
 var fs = require('fs');
 
 if(!fs.existsSync('./ovh.db')){
@@ -8,3 +9,6 @@ if(!fs.existsSync('./ovh.db')){
 
 const db = new sqlite.Database('./ovh.db');
 
+db.each("SELECT * FROM servers", function(err, row){
+    console.log("****" + row.backendName + " is: " + row.frontendName + " with " + row.provider);
+});

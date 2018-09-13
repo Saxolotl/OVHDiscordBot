@@ -12,8 +12,6 @@ var servers = [];
 
 var methods={
     updateRow : function(backendName, available){
-        
-        backendName = backendName.slice(4,10);
 
         var sql = 'UPDATE servers SET available=? WHERE backendName=?';
         var data = [available, backendName];
@@ -22,9 +20,11 @@ var methods={
             if(err) {
                 return console.error(err.message);
             }
+
+            //console.log("Updated: " + backendName + " " + this.changes);
         });
     },
-    getServer : function(server, callback){
+    getServer : function(callback){
         servers = [];
 
         db.all("SELECT * FROM servers", function(err, rows){

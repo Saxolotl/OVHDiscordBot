@@ -20,7 +20,10 @@ function addZero(time){
 }
 
 var job = schedule.scheduleJob('*/' + config.updateInterval + ' * * * *', function(){
-    var date = new Date();
+    checker.updateServers(function(){
+        console.log("hewwo???");
+        generateEmbed();
+    })
 
 
 });
@@ -29,19 +32,20 @@ client.on('ready', () => {
     channel = client.channels.get(config.channelID);
     checker.updateServers(function(){
         console.log("hello?");
+        generateEmbed();
     });
 });
 
 client.on('message', msg => {
     if(msg.content === 'server'){
-        genEmbed(msg.content);
+        generateEmbed(msg.content);
     }
 })
 
 client.login(config.discordToken);
 
-function generateEmbed(content){
-    db.getServer(content, function(server){
+function generateEmbed(){
+    db.getServer(function(server){
         var kim = "";
         var sys = "";
         var ovh = "";

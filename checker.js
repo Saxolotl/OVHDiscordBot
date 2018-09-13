@@ -48,6 +48,8 @@ var methods = {
                 }
             }
 
+            callback();
+
         });
     }
 }
